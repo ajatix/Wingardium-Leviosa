@@ -1,0 +1,7 @@
+function checkForValidUrl(tabId, changeInfo, tab) {
+    chrome.pageAction.show(tabId);
+};
+
+// Listen for any changes to the URL of any tab.
+chrome.tabs.onUpdated.addListener(checkForValidUrl);
+chrome.downloads.download("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-ash4/295321_10150943141353915_1125890917_n.jpg");		

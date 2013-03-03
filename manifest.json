@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+
+  "name": "Wingardium Leviosa",
+  "description": "An extension to ease Human-Computer Interaction inside a web browser.",
+  "version": "0.5",
+  
+  "background": { 
+  	"scripts": ["lib/background.js"],
+  	"persistent": false
+  },
+  
+  "page_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Wingardium Leviosa"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["http://www.youtube.com/watch?v=*"],
+      "js": ["web/youtube.js", "lib/common_proc.js"]
+    },
+    {
+      "matches": ["https://www.facebook.com/photo.php?*"],
+      "js": ["web/facebook.js", "lib/common_proc.js"]
+    },
+    {
+      "matches": ["http://www.rvl.io/ppt/*"],
+      "js": ["web/rvlio.js", "lib/common_proc.js"]
+    }
+  ]
+}

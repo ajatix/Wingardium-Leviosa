@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wingardium Leviosa</title>
+	<link href='http://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet'/>
+	<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<center>
+
+	<h1>Wingardium Leviosa</h1>
+	<p>
+		A browser plugin that can be activated in specific pages to enable hand gesture interaction in web pages.
+		<hr/>
+		<button id="start-button" class="button green">Start</button>
+		<button id="stop-button" class="button red">Stop</button>
+	</p>
+
+	<canvas id="canvas-blended" width="240" height="240"></canvas>
+
+	<hr/>
+	<div id="console-output">Detected commands</div>
+	<div id="console-text"></div>
+</center>
+
+	<script language="JavaScript" src="lib/circularbuffer.js"></script>
+	<script language="JavaScript" src="lib/events.js"></script>
+	<script language="JavaScript" src="lib/detectors.js"></script>
+	<script language="JavaScript" src="lib/main.js"></script>
+	<script language="JavaScript">
+
+	window.onload = function() {
+
+		var canvas = document.getElementById("canvas-blended");
+		var stopbutton = document.getElementById("stop-button");
+		var startbutton = document.getElementById("start-button");
+
+		var consoleText = document.getElementById('console-text');
+
+		var ctx = canvas.getContext("2d");
+
+		ctx.fillStyle = "#FF0000";
+		ctx.strokeStyle = "#00FF00";
+		ctx.lineWidth = 5;
+
+		console.log("Inintializing");
+		
+		var camMotion = CamMotion.Engine({
+			canvasBlended: canvas
+		});
+
+		console.log(camMotion);
+
+		camMotion.on("error", function (e) {
+			console.log("error", e);
+		});
+
+		console.log(camMotion);
+
+		camMotion.on("streamInit", function(e) {
+			console.log("webcam stream initialized", e);
+		});
+
+		camMotion.onMotion(CamMotion.Detectors.LeftMotion, function () {
+			consoleText.innerText = "Left";
+			console.log("AAAAAAAAAAAAAAAH Left motion detected");		
+		});
+		camMotion.onMotion(CamMotion.Detectors.RightMotion, function () {
+			consoleText.innerText = "Right";
+			console.log("AAAAAAAAAAAAAAAH Right motion detected");
+		});
+		camMotion.onMotion(CamMotion.Detectors.DownMotion, function () {
+			consoleText.innerText = "Down";
+			console.log("AAAAAAAAAAAAAAAH Down motion detected");
+		});
+		camMotion.onMotion(CamMotion.Detectors.UpMotion, function () {
+			consoleText.innerText = "Up";
+			console.log("AAAAAAAAAAAAAAAH Up motion detected");
+		});
+
+		camMotion.on("frame", function () {
+
+			var point = camMotion.getMovementPoint(true);
+			// draw a circle
+			ctx.beginPath();
+			ctx.arc(point.x, point.y, point.r, 0, Math.PI*2, true);
+			ctx.closePath();
+			if (camMotion.getAverageMovement(point.x-point.r/2, point.y-point.r/2, point.r, point.r)>4) {
+				ctx.fill();
+			} else {
+				ctx.stroke();
+			}
+		});
+		camMotion.start();
+
+		with(stopbutton) {
+			onclick = function() {camMotion.stop();	console.log('Stopped');};
+		};
+		with(startbutton) {
+			onclick = function() {camMotion.start(); console.log('Stopped');};
+		};
+
+	};
+	</script>
+</body>
+</html>

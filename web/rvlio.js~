@@ -1,0 +1,19 @@
+console.log("Reveal.js image navigation");
+
+var left = document.getElementsByClassName("navigate-left enabled")[0];
+var right = document.getElementsByClassName("navigate-right enabled")[0];
+var up = document.getElementsByClassName("navigate-up enabled")[0];
+var down = document.getElementsByClassName("navigate-down enabled")[0];
+
+function leftAction() {
+		left.click();
+}
+function rightAction() {
+		right.click();
+}
+function downAction() {
+		down.click();
+}
+function upAction() {
+		up.click();
+}
